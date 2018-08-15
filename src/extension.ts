@@ -105,5 +105,4 @@ export function activate(context: vscode.ExtensionContext) {
 
     // Attempt to start up here:
 	console.log("GMLTools Active");
-	console.log("work?");
 }
