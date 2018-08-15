@@ -2,9 +2,9 @@
 	"name": "gml-tools-vsc-client",
 	"description": "GML-Tools for VSCode is the VSCode implementation of the GML Language Server.",
 	"author": "Jonathan Spira (sanboxrunner) @sanboxstudios",
+	"publisher": "Sanbox-Studios",
 	"license": "MIT",
 	"version": "0.0.1",
-	"publisher": "Sanbox-Studios",
 	"engines": {
 		"vscode": "^1.22.0"
 	},
@@ -12,7 +12,8 @@
 		"Programming Languages"
 	],
 	"activationEvents": [
-		"*"
+		"onLanguage:gml",
+		"workspaceContains:./**/**.yyp"
 	],
 	"main": "./out/src/extension",
 	"contributes": {
@@ -46,7 +47,7 @@
 					"GML-GMS2",
 					"GML"
 				],
-				"filenames": [
+				"extensions": [
 					".gml"
 				],
 				"configuration": "./gml-config/gml-smart-brackets.json"
@@ -84,11 +85,17 @@
 		}
 	},
 	"scripts": {
-		"compile": "tsc",
+		"build": "tsc",
 		"watch": "tsc -w",
 		"update-vscode": "node ./node_modules/vscode/bin/install",
 		"postinstall": "node ./node_modules/vscode/bin/install"
 	},
+
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/sanboxrunner/gml-tools-vsc-client"
+	},
+
 	"dependencies": {
 		"@types/node": "^10.7.0",
 		"gml-tools-langserver": "^0.7.16",
