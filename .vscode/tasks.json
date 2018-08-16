@@ -12,6 +12,7 @@
 
     "tasks": [
 		{
+			"label": "Client -- Build",
 			"type" : "npm",
 			"script": "build",
 			"group": {
@@ -21,6 +22,7 @@
 			"problemMatcher": "$tsc"
 		},
 		{
+			"label": "Client -- Watch",
 			"type" : "npm",
 			"script": "watch",
 			"group": "build",
