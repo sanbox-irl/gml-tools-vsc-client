@@ -10,7 +10,11 @@ import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } f
 
 export function activate(context: vscode.ExtensionContext) {
     // The server is implemented in node
+    //*
     let serverModule = context.asAbsolutePath(path.join("node_modules", "gml-tools-langserver", 'out', "server.js" ));
+    /*/
+    let serverModule = "";
+    //*/
     // The debug options for the server
     let debugOptions = { execArgv: ["--nolazy", "--inspect=6009"] };
 
