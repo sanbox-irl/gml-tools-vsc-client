@@ -103,6 +103,31 @@ export function activate(context: vscode.ExtensionContext) {
             const thisURI = await vscode.Uri.file(path);
             await vscode.window.showTextDocument(thisURI);
         });
+
+        client.onNotification("compileExport", async () => {
+            const type = await vscode.window.showQuickPick(["Zip", "Installer"]);
+            if (!type) return;
+            const yyc = await vscode.window.showQuickPick(["YYC", "VM"]);
+            if (!yyc) return;
+
+            client.sendNotification("compileExport", { yyc, type });
+        });
+
+        let compileOutput: vscode.OutputChannel;
+        client.onNotification("compile.started", () => {
+            if (compileOutput) {
+                compileOutput.dispose();
+            }
+            compileOutput = vscode.window.createOutputChannel("Rubber");
+            compileOutput.appendLine("Starting Compile");
+            compileOutput.show();
+        });
+        client.onNotification("compile.status", (data) => {
+            compileOutput.append(data);
+        });
+        client.onNotification("compile.finished", () => {
+            compileOutput.appendLine("\n\nGame Run Complete");
+        });
     });
 
     context.subscriptions.push(client.start());

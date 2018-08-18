@@ -30,8 +30,16 @@
 				"title": "GML Tools: Add Events to Current Object"
 			},
 			{
-				"command": "GMLTools.compile",
-				"title": "GML Tools: Run Program -- VM"
+				"command": "GMLTools.compileTestVM",
+				"title": "GML Tools: Test Project -- VM"
+			},
+			{
+				"command": "GMLTools.compileTestYYC",
+				"title": "GML Tools: Test Project -- YYC"
+			},
+			{
+				"command": "GMLTools.compileExport",
+				"title": "GML Tools: Export Project"
 			},
 			{
 				"command": "GMLTools.forceReindex",
