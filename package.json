@@ -19,31 +19,43 @@
 		"commands": [
 			{
 				"command": "GMLTools.createObject",
-				"title": "GML Tools: Create Object"
+				"title": "Create Object",
+				"category": "GML Tools"
 			},
 			{
 				"command": "GMLTools.createScript",
-				"title": "GML Tools: Create Script"
+				"title": "Create Script",
+				"category": "GML Tools"
 			},
 			{
 				"command": "GMLTools.addEvents",
-				"title": "GML Tools: Add Events to Current Object"
+				"title": "Add Events to Current Object",
+				"category": "GML Tools"
 			},
 			{
 				"command": "GMLTools.compileTestVM",
-				"title": "GML Tools: Test Project -- VM"
+				"title": "Test Project -- VM",
+				"category": "GML Tools"
 			},
 			{
 				"command": "GMLTools.compileTestYYC",
-				"title": "GML Tools: Test Project -- YYC"
+				"title": "Test Project -- YYC",
+				"category": "GML Tools"
 			},
 			{
 				"command": "GMLTools.compileExport",
-				"title": "GML Tools: Export Project"
+				"title": "Export Project",
+				"category": "GML Tools"
 			},
 			{
 				"command": "GMLTools.forceReindex",
-				"title": "GML Tools: Force Reindex"
+				"title": "Force Reindex",
+				"category": "GML Tools"
+			},
+			{
+				"command": "GMLTools.importManual",
+				"title": "Import GameMaker Studio 2 Manual",
+				"category": "GML Tools"
 			}
 		],
 		"languages": [
