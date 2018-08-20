@@ -1,0 +1,9 @@
+{
+  "version": "v1",
+  "packages": {
+    "gml-tools-langserver": {
+      "signature": "39b61e19be6652c4e79bc2a932368258",
+      "file": true
+    }
+  }
+}
