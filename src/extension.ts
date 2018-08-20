@@ -13,8 +13,8 @@ export function activate(context: vscode.ExtensionContext) {
 	//*
 	let serverModule = context.asAbsolutePath(path.join("node_modules", "gml-tools-langserver", "out", "server.js"));
 	/*/
-    let serverModule = "";
-    //*/
+	let serverModule = "";
+	//*/
 	// The debug options for the server
 	let debugOptions = { execArgv: ["--nolazy", "--inspect=6009"] };
 
@@ -127,6 +127,27 @@ export function activate(context: vscode.ExtensionContext) {
 		});
 		client.onNotification("compile.finished", () => {
 			compileOutput.appendLine("\n\nGame Run Complete");
+		});
+
+		client.onRequest("importManual", async () => {
+			const ourManual = await vscode.window.showOpenDialog({
+				openLabel: "GMS2 Program Folder",
+				canSelectFiles: false,
+				canSelectFolders: true,
+				canSelectMany: false
+			});
+
+			return ourManual[0].fsPath;
+		});
+
+		client.onRequest("requestImportManual", async () => {
+			const test = await vscode.window.showInformationMessage(
+				'GMS2 Manual not found at default location. Please specify location of the "GameMaker Studio 2" program folder.',
+				"Okay",
+				"Import later"
+			);
+
+			return test;
 		});
 	});
 
