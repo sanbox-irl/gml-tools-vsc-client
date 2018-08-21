@@ -2,4 +2,6 @@ out/
 
 node_modules/
 
-.vscode/
+.yalc/
+
+yalc.lock

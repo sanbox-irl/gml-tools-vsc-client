@@ -1,0 +1,32 @@
+// A launch configuration that compiles the extension and then opens it inside a new window
+{
+	"version": "2.0.0",
+	"configurations": [
+		{
+			"name": "Launch Extension",
+			"type": "extensionHost",
+			"request": "launch",
+			"preLaunchTask": "npm: debugYalc",
+			"runtimeExecutable": "${execPath}",
+			"args": ["--extensionDevelopmentPath=${workspaceRoot}"],
+			"sourceMaps": true,
+			"outFiles": ["${workspaceRoot}/out/src/**/*.js"]
+		},
+		{
+			"type": "node",
+			"request": "attach",
+			"name": "Attach to Server",
+			"address": "localhost",
+			"protocol": "inspector",
+			"port": 6009,
+			"sourceMaps": true,
+			"outFiles": ["${workspaceRoot}/.yalc/gml-tools-langserver/out/**/*.js"]
+		}
+	],
+	"compounds": [
+		{
+			"name": "Client/Server",
+			"configurations": ["Launch Extension", "Attach to Server"]
+		}
+	]
+}

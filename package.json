@@ -106,6 +106,7 @@
 	"scripts": {
 		"build": "tsc",
 		"watch": "tsc -w",
+		"debugYalc": "yalc add gml-tools-langserver",
 		"update-vscode": "node ./node_modules/vscode/bin/install",
 		"postinstall": "node ./node_modules/vscode/bin/install"
 	},
