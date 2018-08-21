@@ -20,7 +20,7 @@
 			"protocol": "inspector",
 			"port": 6009,
 			"sourceMaps": true,
-			"outFiles": ["${workspaceRoot}/.yalc/gml-tools-langserver/out/**/*.js"]
+			"outFiles": ["C:/Node Projects/gml-tools-ls/out/**/*.js"]
 		}
 	],
 	"compounds": [
