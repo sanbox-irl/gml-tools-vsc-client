@@ -9,12 +9,13 @@ import * as vscode from "vscode";
 import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from "vscode-languageclient";
 
 export function activate(context: vscode.ExtensionContext) {
-	// The server is implemented in node
-	//*
-	let serverModule = context.asAbsolutePath(path.join("node_modules", "gml-tools-langserver", "out", "server.js"));
-	/*/
-	let serverModule = "";
-	//*/
+	// We run from the .yalc store. For context, every compile in the LS will push itself
+	// to the .yalc. When publishing this Client, remove the yalc line, and use this the commented
+	// out line below, which will link it to the NPM package.
+	// let serverModule = context.asAbsolutePath(path.join("node_modules", "gml-tools-langserver", "out", "server.js"));
+
+	let serverModule = context.asAbsolutePath(path.join(".yalc", "gml-tools-langserver", "out", "server.js"));
+
 	// The debug options for the server
 	let debugOptions = { execArgv: ["--nolazy", "--inspect=6009"] };
 
