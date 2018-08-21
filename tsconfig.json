@@ -2,19 +2,14 @@
 	"compilerOptions": {
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
-		"noImplicitAny": false,
-		"noImplicitReturns": true,		
+		"noImplicitReturns": true,
 		"target": "es2018",
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"rootDir": ".",
 		"outDir": "out",
-		"lib": [ "es2018", "dom" ],
-		"sourceMap": true,
-		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true
+		"lib": ["es2018", "dom"],
+		"sourceMap": true
 	},
-	"exclude": [
-		"node_modules"
-	]
+	"exclude": ["node_modules"]
 }
