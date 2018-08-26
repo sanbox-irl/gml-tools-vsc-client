@@ -154,6 +154,6 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(client.start());
 
-	// Attempt to start up here:
+	// Are we alive?:
 	console.log("GMLTools Active");
 }
