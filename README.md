@@ -34,3 +34,4 @@
 7. Begin the Extension by pressing `F5`. To place breakpoints in the Typescript of the language server, once the client is running, launch the "Attach to Server" process from the debug menu, or use the Client/Server option to launch both at once.
 
 8. Happy coding! If any problems occur, please add an issue. If you have any suggestions for simplifying this process while keeping the language server and the separate, please submit an issue. Thank you!
+

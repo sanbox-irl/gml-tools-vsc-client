@@ -12,7 +12,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// We run from the .yalc store. For context, every compile in the LS will push itself
 	// to the .yalc. When publishing this Client, remove the yalc line, and use this the commented
 	// out line below, which will link it to the NPM package.
-	// let serverModule = context.asAbsolutePath(path.join("node_modules", "gml-tools-langserver", "out", "server.js"));
+	// let serverModule = context.asAbsolutePath(path.join("node_modules", "gml-tools-langserver", "out", "main.js"));
 
 	let serverModule = context.asAbsolutePath(path.join(".yalc", "gml-tools-langserver", "out", "server.js"));
 
