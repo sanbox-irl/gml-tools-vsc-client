@@ -12,9 +12,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// We run from the .yalc store. For context, every compile in the LS will push itself
 	// to the .yalc. When publishing this Client, remove the yalc line, and use this the commented
 	// out line below, which will link it to the NPM package.
-	// let serverModule = context.asAbsolutePath(path.join("node_modules", "gml-tools-langserver", "out", "main.js"));
-
-	let serverModule = context.asAbsolutePath(path.join(".yalc", "gml-tools-langserver", "out", "server.js"));
+	let serverModule = context.asAbsolutePath(path.join("node_modules", "gml-tools-langserver", "out", "main.js"));
 
 	// The debug options for the server
 	let debugOptions = { execArgv: ["--nolazy", "--inspect=6009"] };
@@ -46,9 +44,8 @@ export function activate(context: vscode.ExtensionContext) {
 	// Create the language client and start the client.
 	let client = new LanguageClient("gmlTools", "Language Server", serverOptions, clientOptions);
 	client.onReady().then(async () => {
-		client.onNotification("createObject", async (ourSprites) => {
+		client.onRequest("createObject", async (ourSprites) => {
 			let spriteArray: { sprites: string[] };
-
 			if (ourSprites) {
 				spriteArray = ourSprites;
 			}
@@ -58,34 +55,33 @@ export function activate(context: vscode.ExtensionContext) {
 				ignoreFocusOut: true,
 				value: "obj"
 			});
+			if (!objectName) return null;
 
-			if (objectName) {
-				const objectEvents = await vscode.window.showInputBox({
-					prompt: "Events? (seperate with comma)",
-					ignoreFocusOut: true,
-					value: "Create, Step, Draw"
-				});
+			const objectEvents = await vscode.window.showInputBox({
+				prompt: "Events? (seperate with comma)",
+				ignoreFocusOut: true,
+				value: "Create, Step, Draw"
+			});
+			if (!objectEvents) return null;
 
-				if (objectEvents) {
-					const sprite = await vscode.window.showQuickPick(spriteArray.sprites, {
-						canPickMany: false,
-						ignoreFocusOut: true
-					});
+			const sprite = await vscode.window.showQuickPick(spriteArray.sprites, {
+				canPickMany: false,
+				ignoreFocusOut: true
+			});
+			if (!sprite) return null;
 
-					if (sprite) {
-						client.sendNotification("createObject", { objectName, objectEvents, sprite });
-					}
-				}
-			}
+			return { objectName, objectEvents, sprite };
 		});
 
-		client.onNotification("createScript", async () => {
+		client.onRequest("createScript", async () => {
 			const ourScriptName = await vscode.window.showInputBox({
 				prompt: "Script Name?",
 				ignoreFocusOut: true
 			});
 
-			client.sendNotification("createScript", ourScriptName);
+			if (ourScriptName) {
+				return ourScriptName;
+			} else return null;
 		});
 
 		client.onNotification("addEvents", async () => {
