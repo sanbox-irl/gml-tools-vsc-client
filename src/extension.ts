@@ -84,7 +84,7 @@ export function activate(context: vscode.ExtensionContext) {
 			} else return null;
 		});
 
-		client.onNotification("addEvents", async () => {
+		client.onRequest("addEvents", async () => {
 			const thisURI = vscode.window.activeTextEditor.document.uri;
 			const ourEvents = await vscode.window.showInputBox({
 				prompt: "Events to Add?",
@@ -92,8 +92,8 @@ export function activate(context: vscode.ExtensionContext) {
 			});
 
 			if (ourEvents) {
-				client.sendNotification("addEvents", { uri: thisURI.toString(), events: ourEvents });
-			}
+				return { uri: thisURI.toString(), events: ourEvents };
+			} else return null;
 		});
 
 		client.onNotification("goToURI", async (path: string) => {
@@ -101,13 +101,13 @@ export function activate(context: vscode.ExtensionContext) {
 			await vscode.window.showTextDocument(thisURI);
 		});
 
-		client.onNotification("compileExport", async () => {
+		client.onRequest("compileExport", async () => {
 			const type = await vscode.window.showQuickPick(["Zip", "Installer"]);
-			if (!type) return;
+			if (!type) return null;
 			const yyc = await vscode.window.showQuickPick(["YYC", "VM"]);
-			if (!yyc) return;
+			if (!yyc) return null;
 
-			client.sendNotification("compileExport", { yyc, type });
+			return { yyc, type };
 		});
 
 		let compileOutput: vscode.OutputChannel;
@@ -138,13 +138,13 @@ export function activate(context: vscode.ExtensionContext) {
 		});
 
 		client.onRequest("requestImportManual", async () => {
-			const test = await vscode.window.showInformationMessage(
+			const location = await vscode.window.showInformationMessage(
 				'GMS2 Manual not found at default location. Please specify location of the "GameMaker Studio 2" program folder.',
 				"Okay",
 				"Import later"
 			);
 
-			return test;
+			return location;
 		});
 	});
 
