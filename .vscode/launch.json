@@ -10,7 +10,8 @@
 			"runtimeExecutable": "${execPath}",
 			"args": ["--extensionDevelopmentPath=${workspaceRoot}"],
 			"sourceMaps": true,
-			"outFiles": ["${workspaceRoot}/out/src/**/*.js"]
+			"outFiles": ["${workspaceRoot}/out/**/*.js"],
+			"smartStep": true
 		},
 		{
 			"type": "node",
@@ -20,7 +21,7 @@
 			"protocol": "inspector",
 			"port": 6009,
 			"sourceMaps": true,
-			"outFiles": ["C:/Node Projects/gml-tools-ls/out/**/*.js"]
+			"outFiles": ["${workspaceRoot}/node_modules/gml-tools-langserver/out/**/*.js"]
 		}
 	],
 	"compounds": [

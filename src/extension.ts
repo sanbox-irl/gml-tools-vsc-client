@@ -6,7 +6,27 @@
 
 import * as path from "path";
 import * as vscode from "vscode";
-import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from "vscode-languageclient";
+import {
+	LanguageClient,
+	LanguageClientOptions,
+	ServerOptions,
+	TransportKind,
+	RequestType
+} from "vscode-languageclient";
+
+interface ClientViewNode {
+	/** This is the model name of the resource. */
+	modelName: string;
+
+	/** This is the human readable name of a resource, such as "objPlayer". */
+	name: string;
+
+	/** This is the UUID of the resource. */
+	id: string;
+
+	/** This is the absolute filepath to the .YY file which describes the Resource. */
+	fpath: string;
+}
 
 export function activate(context: vscode.ExtensionContext) {
 	// We run from the .yalc store. For context, every compile in the LS will push itself
@@ -44,12 +64,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// Create the language client and start the client.
 	let client = new LanguageClient("gmlTools", "Language Server", serverOptions, clientOptions);
 	client.onReady().then(async () => {
-		client.onRequest("createObject", async (ourSprites) => {
-			let spriteArray: { sprites: string[] };
-			if (ourSprites) {
-				spriteArray = ourSprites;
-			}
-
+		client.onRequest("createObject", async (ourSprites: { sprites: string[] }) => {
 			const objectName = await vscode.window.showInputBox({
 				prompt: "Object name?",
 				ignoreFocusOut: true,
@@ -64,7 +79,7 @@ export function activate(context: vscode.ExtensionContext) {
 			});
 			if (!objectEvents) return null;
 
-			const sprite = await vscode.window.showQuickPick(spriteArray.sprites, {
+			const sprite = await vscode.window.showQuickPick(ourSprites.sprites, {
 				canPickMany: false,
 				ignoreFocusOut: true
 			});
@@ -85,6 +100,10 @@ export function activate(context: vscode.ExtensionContext) {
 		});
 
 		client.onRequest("addEvents", async () => {
+			if (!vscode.window.activeTextEditor) {
+				return null;
+			}
+
 			const thisURI = vscode.window.activeTextEditor.document.uri;
 			const ourEvents = await vscode.window.showInputBox({
 				prompt: "Events to Add?",
@@ -133,8 +152,9 @@ export function activate(context: vscode.ExtensionContext) {
 				canSelectFolders: true,
 				canSelectMany: false
 			});
-
-			return ourManual[0].fsPath;
+			if (ourManual) {
+				return ourManual[0].fsPath;
+			} else return null;
 		});
 
 		client.onRequest("requestImportManual", async () => {
@@ -146,10 +166,19 @@ export function activate(context: vscode.ExtensionContext) {
 
 			return location;
 		});
+
+		// Andrew -- here is what a request for views looks like. You can find the corresponding
+		// `onRequest` in main.ts in the LS. It does a special check for "init" and sends the default
+		// root views, otherwise, it expects a UUID. If it fails, it will return an empty [].
+		// Feel free to delete/re-write this comment (as this the whole client).
+		const initViews = await client.sendRequest(
+			new RequestType<string, ClientViewNode[], void, void>("getViewsAtUUID"),
+			"init"
+		);
 	});
 
 	context.subscriptions.push(client.start());
 
-	// Are we alive?:
+	// Ping our status:
 	console.log("GMLTools Active");
 }
