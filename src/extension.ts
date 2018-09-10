@@ -10,23 +10,23 @@ import {
 	LanguageClient,
 	LanguageClientOptions,
 	ServerOptions,
-	TransportKind,
-	RequestType
+	TransportKind
+	// RequestType
 } from "vscode-languageclient";
 
-interface ClientViewNode {
-	/** This is the model name of the resource. */
-	modelName: string;
+// interface ClientViewNode {
+// 	/** This is the model name of the resource. */
+// 	modelName: string;
 
-	/** This is the human readable name of a resource, such as "objPlayer". */
-	name: string;
+// 	/** This is the human readable name of a resource, such as "objPlayer". */
+// 	name: string;
 
-	/** This is the UUID of the resource. */
-	id: string;
+// 	/** This is the UUID of the resource. */
+// 	id: string;
 
-	/** This is the absolute filepath to the .YY file which describes the Resource. */
-	fpath: string;
-}
+// 	/** This is the absolute filepath to the .YY file which describes the Resource. */
+// 	fpath: string;
+// }
 
 export function activate(context: vscode.ExtensionContext) {
 	// We run from the .yalc store. For context, every compile in the LS will push itself
@@ -62,7 +62,7 @@ export function activate(context: vscode.ExtensionContext) {
 	};
 
 	// Create the language client and start the client.
-	let client = new LanguageClient("gmlTools", "Language Server", serverOptions, clientOptions);
+	let client = new LanguageClient("gmlTools", "GML Language Server", serverOptions, clientOptions);
 	client.onReady().then(async () => {
 		client.onRequest("createObject", async (ourSprites: { sprites: string[] }) => {
 			const objectName = await vscode.window.showInputBox({
@@ -171,10 +171,10 @@ export function activate(context: vscode.ExtensionContext) {
 		// `onRequest` in main.ts in the LS. It does a special check for "init" and sends the default
 		// root views, otherwise, it expects a UUID. If it fails, it will return an empty [].
 		// Feel free to delete/re-write this comment (as this the whole client).
-		const initViews = await client.sendRequest(
-			new RequestType<string, ClientViewNode[], void, void>("getViewsAtUUID"),
-			"init"
-		);
+		// const initViews = await client.sendRequest(
+		// 	new RequestType<string, ClientViewNode[], void, void>("getViewsAtUUID"),
+		// 	"init"
+		// );
 	});
 
 	context.subscriptions.push(client.start());
