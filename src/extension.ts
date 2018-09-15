@@ -13,6 +13,7 @@ import {
 	TransportKind
 	// RequestType
 } from "vscode-languageclient";
+import { ResourceTree, ClientViewNode } from "./resourceTree";
 
 // interface ClientViewNode {
 // 	/** This is the model name of the resource. */
@@ -167,6 +168,9 @@ export function activate(context: vscode.ExtensionContext) {
 			return location;
 		});
 
+		const resourceTree = new ResourceTree(client);
+		context.subscriptions.push(vscode.window.registerTreeDataProvider("GMLTools.resourceTree", resourceTree));
+
 		// Andrew -- here is what a request for views looks like. You can find the corresponding
 		// `onRequest` in main.ts in the LS. It does a special check for "init" and sends the default
 		// root views, otherwise, it expects a UUID. If it fails, it will return an empty [].
@@ -178,6 +182,21 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	context.subscriptions.push(client.start());
+	context.subscriptions.push(
+		vscode.commands.registerCommand("GMLTools.openFile", async (node: ClientViewNode) => {
+			if (node.modelName !== "GMScript") {
+				return;
+			}
+
+			const scriptName = path.basename(node.fpath) + ".gml";
+			const filePath = path.join(node.fpath, scriptName);
+
+			const doc = await vscode.workspace.openTextDocument(filePath);
+			await vscode.window.showTextDocument(doc, {
+				preview: false
+			});
+		})
+	);
 
 	// Ping our status:
 	console.log("GMLTools Active");
