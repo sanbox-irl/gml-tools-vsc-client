@@ -184,6 +184,8 @@ export function activate(context: vscode.ExtensionContext) {
 		// );
 	});
 
+	const clickTimers = new Map<string, number>();
+
 	context.subscriptions.push(client.start());
 	context.subscriptions.push(
 		vscode.commands.registerCommand("GMLTools.openFile", async (node: ClientViewNode) => {
@@ -191,12 +193,16 @@ export function activate(context: vscode.ExtensionContext) {
 				return;
 			}
 
+			const now = Date.now();
+			const lastClick = clickTimers.get(node.id) || 0;
+			clickTimers.set(node.id, now);
+
 			const scriptName = path.basename(node.fpath) + ".gml";
 			const filePath = path.join(node.fpath, scriptName);
 
 			const doc = await vscode.workspace.openTextDocument(filePath);
 			await vscode.window.showTextDocument(doc, {
-				preview: false
+				preview: now - lastClick > 200
 			});
 		})
 	);
