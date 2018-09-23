@@ -168,8 +168,11 @@ export function activate(context: vscode.ExtensionContext) {
 			return location;
 		});
 
-		const resourceTree = new ResourceTree(client);
-		context.subscriptions.push(vscode.window.registerTreeDataProvider("GMLTools.resourceTree", resourceTree));
+		client.onNotification("indexComplete", () => {
+			console.log("I fuckin told you I work");
+			const resourceTree = new ResourceTree(client);
+			context.subscriptions.push(vscode.window.registerTreeDataProvider("GMLTools.resourceTree", resourceTree));
+		});
 
 		// Andrew -- here is what a request for views looks like. You can find the corresponding
 		// `onRequest` in main.ts in the LS. It does a special check for "init" and sends the default
