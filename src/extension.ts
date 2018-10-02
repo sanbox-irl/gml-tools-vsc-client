@@ -169,19 +169,9 @@ export function activate(context: vscode.ExtensionContext) {
 		});
 
 		client.onNotification("indexComplete", () => {
-			console.log("I fuckin told you I work");
 			const resourceTree = new ResourceTree(client);
 			context.subscriptions.push(vscode.window.registerTreeDataProvider("GMLTools.resourceTree", resourceTree));
 		});
-
-		// Andrew -- here is what a request for views looks like. You can find the corresponding
-		// `onRequest` in main.ts in the LS. It does a special check for "init" and sends the default
-		// root views, otherwise, it expects a UUID. If it fails, it will return an empty [].
-		// Feel free to delete/re-write this comment (as this the whole client).
-		// const initViews = await client.sendRequest(
-		// 	new RequestType<string, ClientViewNode[], void, void>("getViewsAtUUID"),
-		// 	"init"
-		// );
 	});
 
 	const clickTimers = new Map<string, number>();
@@ -197,10 +187,7 @@ export function activate(context: vscode.ExtensionContext) {
 			const lastClick = clickTimers.get(node.id) || 0;
 			clickTimers.set(node.id, now);
 
-			const scriptName = path.basename(node.fpath) + ".gml";
-			const filePath = path.join(node.fpath, scriptName);
-
-			const doc = await vscode.workspace.openTextDocument(filePath);
+			const doc = await vscode.workspace.openTextDocument(node.fpath);
 			await vscode.window.showTextDocument(doc, {
 				preview: now - lastClick > 200
 			});
