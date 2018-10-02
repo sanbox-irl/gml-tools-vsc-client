@@ -11,7 +11,8 @@ export interface ClientViewNode {
 	/** This is the UUID of the resource. */
 	id: string;
 
-	/** This is the absolute filepath to the .YY file which describes the Resource. */
+	/** This is the absolute filepath to either the .GML file, if it exists, or the .YY file, if it exist,
+	 * or the view folder YY file. */
 	fpath: string;
 }
 
