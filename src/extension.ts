@@ -183,7 +183,6 @@ export function activate(context: vscode.ExtensionContext) {
             const lastClick = clickTimers.get(node.id) || 0;
             clickTimers.set(node.id, now);
 
-            let doc;
             // Special function for PNGs for Now:
             if (node.fpath.includes('.png')) {
                 const uri = vscode.Uri.file(node.fpath);
