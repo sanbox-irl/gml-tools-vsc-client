@@ -1,179 +1,179 @@
 {
-	"name": "gml-tools-vsc-client",
-	"description": "GML-Tools for VSCode is the VSCode implementation of the GML Language Server.",
-	"author": "Jonathan Spira (sanboxrunner) @sanboxstudios",
-	"publisher": "Sanbox-Studios",
-	"license": "MIT",
-	"version": "0.8.0",
-	"engines": {
-		"vscode": "^1.26.0"
-	},
-	"categories": [
-		"Programming Languages"
-	],
-	"activationEvents": [
-		"workspaceContains:*.yyp"
-	],
-	"main": "./out/extension",
-	"contributes": {
-		"commands": [
-			{
-				"command": "GMLTools.createObject",
-				"title": "Create Object",
-				"category": "GML Tools"
-			},
-			{
-				"command": "GMLTools.createScript",
-				"title": "Create Script",
-				"category": "GML Tools"
-			},
-			{
-				"command": "GMLTools.addEvents",
-				"title": "Add Events to Current Object",
-				"category": "GML Tools"
-			},
-			{
-				"command": "GMLTools.compileTestVM",
-				"title": "Test Project -- VM",
-				"category": "GML Tools"
-			},
-			{
-				"command": "GMLTools.compileTestYYC",
-				"title": "Test Project -- YYC",
-				"category": "GML Tools"
-			},
-			{
-				"command": "GMLTools.compileExport",
-				"title": "Export Project",
-				"category": "GML Tools"
-			},
-			{
-				"command": "GMLTools.forceReindex",
-				"title": "Force Reindex",
-				"category": "GML Tools"
-			},
-			{
-				"command": "GMLTools.restoreYYP",
-				"title": "Restore YYP To Original State",
-				"category": "GML Tools"
-			}
-		],
-		"languages": [
-			{
-				"id": "gml",
-				"aliases": [
-					"GameMaker Language",
-					"GML-GMS2",
-					"GML"
-				],
-				"extensions": [
-					".gml"
-				],
-				"configuration": "./gml-config/gml-smart-brackets.json"
-			}
-		],
-		"grammars": [
-			{
-				"language": "gml",
-				"scopeName": "source.gml",
-				"path": "./gml-config/gml.json"
-			}
-		],
-		"snippets": [
-			{
-				"language": "gml",
-				"path": "./gml-config/snippets.json"
-			}
-		],
-		"configuration": {
-			"type": "object",
-			"title": "Settings for GML-Tools",
-			"properties": {
-				"gml-tools.preferredSpellings": {
-					"scope": "window",
-					"type": "string",
-					"enum": [
-						"American",
-						"British",
-						"No Preference"
-					],
-					"default": "American",
-					"description": "Decides which spelling configuration will appear in auto-completion of function names. Both spelling configurations will always be acceptable to use.",
-					"enumDescriptions": [
-						"Use American spelling, such as 'color' instead of 'colour' and 'randomize' instead of 'randomise' in auto-completion. This is the default setting.",
-						"Use British spelling, such as 'colour' instead of 'color' and 'randomise' instead of 'randomize' in auto-completion.",
-						"Will allow for both spellings in auto-complete. This is option is not recommended, as typing 'merge_', for example, will show 'merge_color' and 'merge_colour'."
-					]
-				},
-				"gml-tools.numberOfDocumentationSentences": {
-					"scope": "resource",
-					"type": "number",
-					"default": 1,
-					"description": "Decides how many sentences of the GMS2 Manual Documentation will appear in hover, function, or autocomplete tooltips. Set to -1 for all stored information."
-				}
-			}
-		},
-		"viewsContainers": {
-			"activitybar": [
-				{
-					"id": "GMLTools",
-					"icon": "./icon.png",
-					"title": "GMLTools"
-				}
-			]
-		},
-		"views": {
-			"GMLTools": [
-				{
-					"id": "GMLTools.resourceTree",
-					"name": "Resources"
-				},
-				{
-					"id": "GMLTools.outlineTree",
-					"name": "Outline"
-				}
-			]
-		}
-	},
-	"scripts": {
-		"build": "tsc",
-		"watch": "tsc -w",
-		"debugYalc": "yalc link gml-tools-langserver",
-		"vscode:prepublish": "tsc",
-		"update-vscode": "node ./node_modules/vscode/bin/install",
-		"postinstall": "node ./node_modules/vscode/bin/install"
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "lint-staged"
-		}
-	},
-	"lint-staged": {
-		"*.{ts,json}": [
-			"prettier --write",
-			"git add"
-		]
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/sanboxrunner/gml-tools-vsc-client"
-	},
-	"dependencies": {
-		"gml-tools-langserver": "^0.8.1",
-		"mkdirp": "^0.5.1",
-		"path": "^0.12.7",
-		"vscode": "^1.1.21",
-		"vscode-languageclient": "^5.0.1",
-		"vscode-languageserver": "^5.0.0",
-		"vscode-languageserver-protocol-foldingprovider": "^2.0.1",
-		"vscode-languageserver-types": "^3.10.1"
-	},
-	"devDependencies": {
-		"@types/node": "^10.7.1",
-		"husky": "^1.0.0-rc.13",
-		"lint-staged": "^7.2.2",
-		"prettier": "^1.14.2",
-		"typescript": "^3.0.1",
-		"yalc": "^1.0.0-pre.22"
-	}
+    "name": "gml-tools-vsc-client",
+    "description": "GML-Tools for VSCode is the VSCode implementation of the GML Language Server.",
+    "author": "Jonathan Spira (sanboxrunner) @sanboxstudios",
+    "publisher": "Sanbox-Studios",
+    "license": "MIT",
+    "version": "0.9.0",
+    "engines": {
+        "vscode": "^1.26.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "activationEvents": [
+        "workspaceContains:*.yyp"
+    ],
+    "main": "./out/extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "GMLTools.createObject",
+                "title": "Create Object",
+                "category": "GML Tools"
+            },
+            {
+                "command": "GMLTools.createScript",
+                "title": "Create Script",
+                "category": "GML Tools"
+            },
+            {
+                "command": "GMLTools.addEvents",
+                "title": "Add Events to Current Object",
+                "category": "GML Tools"
+            },
+            {
+                "command": "GMLTools.compileTestVM",
+                "title": "Test Project -- VM",
+                "category": "GML Tools"
+            },
+            {
+                "command": "GMLTools.compileTestYYC",
+                "title": "Test Project -- YYC",
+                "category": "GML Tools"
+            },
+            {
+                "command": "GMLTools.compileExport",
+                "title": "Export Project",
+                "category": "GML Tools"
+            },
+            {
+                "command": "GMLTools.forceReindex",
+                "title": "Force Reindex",
+                "category": "GML Tools"
+            },
+            {
+                "command": "GMLTools.restoreYYP",
+                "title": "Restore YYP To Original State",
+                "category": "GML Tools"
+            }
+        ],
+        "languages": [
+            {
+                "id": "gml",
+                "aliases": [
+                    "GameMaker Language",
+                    "GML-GMS2",
+                    "GML"
+                ],
+                "extensions": [
+                    ".gml"
+                ],
+                "configuration": "./gml-config/gml-smart-brackets.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "gml",
+                "scopeName": "source.gml",
+                "path": "./gml-config/gml.json"
+            }
+        ],
+        "snippets": [
+            {
+                "language": "gml",
+                "path": "./gml-config/snippets.json"
+            }
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "Settings for GML-Tools",
+            "properties": {
+                "gml-tools.preferredSpellings": {
+                    "scope": "window",
+                    "type": "string",
+                    "enum": [
+                        "American",
+                        "British",
+                        "No Preference"
+                    ],
+                    "default": "American",
+                    "description": "Decides which spelling configuration will appear in auto-completion of function names. Both spelling configurations will always be acceptable to use.",
+                    "enumDescriptions": [
+                        "Use American spelling, such as 'color' instead of 'colour' and 'randomize' instead of 'randomise' in auto-completion. This is the default setting.",
+                        "Use British spelling, such as 'colour' instead of 'color' and 'randomise' instead of 'randomize' in auto-completion.",
+                        "Will allow for both spellings in auto-complete. This is option is not recommended, as typing 'merge_', for example, will show 'merge_color' and 'merge_colour'."
+                    ]
+                },
+                "gml-tools.numberOfDocumentationSentences": {
+                    "scope": "resource",
+                    "type": "number",
+                    "default": 1,
+                    "description": "Decides how many sentences of the GMS2 Manual Documentation will appear in hover, function, or autocomplete tooltips. Set to -1 for all stored information."
+                }
+            }
+        },
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "GMLTools",
+                    "icon": "./icon.png",
+                    "title": "GMLTools"
+                }
+            ]
+        },
+        "views": {
+            "GMLTools": [
+                {
+                    "id": "GMLTools.resourceTree",
+                    "name": "Resources"
+                },
+                {
+                    "id": "GMLTools.outlineTree",
+                    "name": "Outline"
+                }
+            ]
+        }
+    },
+    "scripts": {
+        "build": "tsc",
+        "watch": "tsc -w",
+        "debugYalc": "yalc link gml-tools-langserver",
+        "vscode:prepublish": "tsc",
+        "update-vscode": "node ./node_modules/vscode/bin/install",
+        "postinstall": "node ./node_modules/vscode/bin/install"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.{ts,json}": [
+            "prettier --write",
+            "git add"
+        ]
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/sanboxrunner/gml-tools-vsc-client"
+    },
+    "dependencies": {
+        "gml-tools-langserver": "^0.9.1",
+        "mkdirp": "^0.5.1",
+        "path": "^0.12.7",
+        "vscode": "^1.1.21",
+        "vscode-languageclient": "^5.0.1",
+        "vscode-languageserver": "^5.0.0",
+        "vscode-languageserver-protocol-foldingprovider": "^2.0.1",
+        "vscode-languageserver-types": "^3.10.1"
+    },
+    "devDependencies": {
+        "@types/node": "^10.7.1",
+        "husky": "^1.0.0-rc.13",
+        "lint-staged": "^7.2.2",
+        "prettier": "^1.14.2",
+        "typescript": "^3.0.1",
+        "yalc": "^1.0.0-pre.22"
+    }
 }
