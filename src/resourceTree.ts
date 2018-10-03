@@ -33,16 +33,12 @@ export class ResourceTree implements vscode.TreeDataProvider<ClientViewNode> {
         const item = new vscode.TreeItem(node.name);
         item.id = node.id;
         item.resourceUri = vscode.Uri.file(node.fpath);
-        item.iconPath =
-            node.modelName === 'GMFolder' || node.modelName === 'GMObject'
-                ? vscode.ThemeIcon.Folder
-                : vscode.ThemeIcon.File;
-        item.collapsibleState =
-            node.modelName === 'GMFolder' || node.modelName == 'GMObject'
-                ? vscode.TreeItemCollapsibleState.Collapsed
-                : vscode.TreeItemCollapsibleState.None;
+        item.iconPath = this.isPseudoFolder(node.modelName) ? vscode.ThemeIcon.Folder : vscode.ThemeIcon.File;
+        item.collapsibleState = this.isPseudoFolder(node.modelName)
+            ? vscode.TreeItemCollapsibleState.Collapsed
+            : vscode.TreeItemCollapsibleState.None;
 
-        if (node.modelName === 'GMScript' || node.modelName === 'GMEvent') {
+        if (!this.isPseudoFolder(node.modelName)) {
             item.command = {
                 command: 'GMLTools.openFile',
                 title: '',
@@ -69,5 +65,9 @@ export class ResourceTree implements vscode.TreeDataProvider<ClientViewNode> {
         );
 
         return resourceViews;
+    }
+
+    private isPseudoFolder(modelName: string): boolean {
+        return ['GMFolder', 'GMObject', 'GMShader', 'GMSprite'].includes(modelName);
     }
 }

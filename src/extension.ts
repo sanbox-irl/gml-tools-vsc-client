@@ -179,18 +179,22 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(client.start());
     context.subscriptions.push(
         vscode.commands.registerCommand('GMLTools.openFile', async (node: ClientViewNode) => {
-            if (node.modelName !== 'GMScript' && node.modelName !== 'GMEvent') {
-                return;
-            }
-
             const now = Date.now();
             const lastClick = clickTimers.get(node.id) || 0;
             clickTimers.set(node.id, now);
 
-            const doc = await vscode.workspace.openTextDocument(node.fpath);
-            await vscode.window.showTextDocument(doc, {
-                preview: now - lastClick > 200
-            });
+            let doc;
+            // Special function for PNGs for Now:
+            if (node.fpath.includes('.png')) {
+                const uri = vscode.Uri.file(node.fpath);
+                await vscode.commands.executeCommand('vscode.open', uri);
+            } else {
+                const doc = await vscode.workspace.openTextDocument(node.fpath);
+
+                await vscode.window.showTextDocument(doc, {
+                    preview: now - lastClick > 200
+                });
+            }
         })
     );
 
