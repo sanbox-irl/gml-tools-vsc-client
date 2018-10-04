@@ -1128,9 +1128,9 @@ globby@^5.0.0:
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
 
-gml-tools-langserver@^0.9.2:
-  version "0.9.2"
-  resolved "https://registry.yarnpkg.com/gml-tools-langserver/-/gml-tools-langserver-0.9.2.tgz#fc7ee255efb9c4fa16fb7ccb776658ed15da33dc"
+gml-tools-langserver@^0.9.3:
+  version "0.9.3"
+  resolved "https://registry.yarnpkg.com/gml-tools-langserver/-/gml-tools-langserver-0.9.3.tgz#675ca1bd050b08ae4d23ddd15acf2b2beda95a79"
   dependencies:
     adm-zip "^0.4.11"
     ajv "^6.5.3"
