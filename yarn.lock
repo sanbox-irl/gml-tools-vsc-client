@@ -33,7 +33,7 @@ ajv@^5.3.0:
     fast-json-stable-stringify "^2.0.0"
     json-schema-traverse "^0.3.0"
 
-ajv@^6.5.3:
+ajv@^6.5.3, ajv@^6.5.4:
   version "6.5.4"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.5.4.tgz#247d5274110db653706b550fcc2b797ca28cfc59"
   dependencies:
@@ -587,6 +587,10 @@ deep-extend@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.6.0.tgz#c4fa7c95404a17a9c3e8ca7e1537312b736330ac"
 
+deepmerge@^2.1.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-2.2.1.tgz#5d3ff22a01c00f645405a2fbc17d0778a1801170"
+
 defaults@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/defaults/-/defaults-1.0.3.tgz#c656051e9817d9ff08ed881477f3fe4019f3ef7d"
@@ -870,6 +874,13 @@ fast-json-stable-stringify@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/fast-json-stable-stringify/-/fast-json-stable-stringify-2.0.0.tgz#d5142c0caee6b1189f87d3a76111064f86c8bbf2"
 
+fast-json-stringify@^1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/fast-json-stringify/-/fast-json-stringify-1.9.0.tgz#7701455489cd280440ac46a05337537dff0d2101"
+  dependencies:
+    ajv "^6.5.4"
+    deepmerge "^2.1.1"
+
 fd-slicer@~1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/fd-slicer/-/fd-slicer-1.1.0.tgz#25c7c89cb1f9077f8891bbe61d8f390eae256f1e"
@@ -1128,14 +1139,15 @@ globby@^5.0.0:
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
 
-gml-tools-langserver@^0.9.3:
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/gml-tools-langserver/-/gml-tools-langserver-0.9.3.tgz#675ca1bd050b08ae4d23ddd15acf2b2beda95a79"
+gml-tools-langserver@^0.9.4:
+  version "0.9.4"
+  resolved "https://registry.yarnpkg.com/gml-tools-langserver/-/gml-tools-langserver-0.9.4.tgz#808f3d7fa7d8f0ddbed957ec04e6f4f7d7cf6387"
   dependencies:
     adm-zip "^0.4.11"
     ajv "^6.5.3"
     cheerio "^1.0.0-rc.2"
     chokidar "^2.0.4"
+    fast-json-stringify "^1.9.0"
     fs-extra "^7.0.0"
     gamemaker-rubber "^2.0.3"
     intellisense "0.0.1"
