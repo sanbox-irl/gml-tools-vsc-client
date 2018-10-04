@@ -95,10 +95,10 @@
         {
             "match": "(?i)\\b((obj|scr|spr|rm)_\\w+)\\b",
             "name": "variable.other.gml",
-            "comment": "This is 'spr_Player' or 'objPlayer'."
+            "comment": "This is 'spr_player' or 'obj_player'."
         },
         {
-            "match": "(?i)\\b((obj|scr|spr|rm)\\w+)\\b",
+            "match": "(?i)\\b((obj|scr|spr|rm)[A-Z]\\w+)\\b",
             "name": "variable.other.gml",
             "comment": "This is 'sprPlayer` or `objPlayer'."
         },
