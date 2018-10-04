@@ -9,8 +9,8 @@
     any-observable "^0.3.0"
 
 "@types/node@*":
-  version "10.11.3"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.11.3.tgz#c055536ac8a5e871701aa01914be5731539d01ee"
+  version "10.11.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.11.4.tgz#e8bd933c3f78795d580ae41d86590bfc1f4f389d"
 
 "@types/node@^10.7.1":
   version "10.7.1"
@@ -1128,9 +1128,9 @@ globby@^5.0.0:
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
 
-gml-tools-langserver@^0.9.1:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/gml-tools-langserver/-/gml-tools-langserver-0.9.1.tgz#ea27e5893819278e38735c85374898f3377311fb"
+gml-tools-langserver@^0.9.2:
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/gml-tools-langserver/-/gml-tools-langserver-0.9.2.tgz#fc7ee255efb9c4fa16fb7ccb776658ed15da33dc"
   dependencies:
     adm-zip "^0.4.11"
     ajv "^6.5.3"
