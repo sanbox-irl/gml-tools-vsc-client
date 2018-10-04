@@ -146,7 +146,7 @@ export function activate(context: vscode.ExtensionContext) {
 
         client.onRequest('requestImportManual', async () => {
             const location = await vscode.window.showInformationMessage(
-                'GMS2 Manual not found at default location. Please specify location of the "GameMaker Studio 2" program folder.',
+                'GMS2 Manual not found at "~/Program Folder/GameMaker Studio 2". Please specify location of the "GameMaker Studio 2" program folder.',
                 'Okay',
                 'Import later'
             );
