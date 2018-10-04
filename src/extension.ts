@@ -15,20 +15,6 @@ import {
 } from 'vscode-languageclient';
 import { ResourceTree, ClientViewNode } from './resourceTree';
 
-// interface ClientViewNode {
-// 	/** This is the model name of the resource. */
-// 	modelName: string;
-
-// 	/** This is the human readable name of a resource, such as "objPlayer". */
-// 	name: string;
-
-// 	/** This is the UUID of the resource. */
-// 	id: string;
-
-// 	/** This is the absolute filepath to the .YY file which describes the Resource. */
-// 	fpath: string;
-// }
-
 export function activate(context: vscode.ExtensionContext) {
     // We run from the .yalc store. For context, every compile in the LS will push itself
     // to the .yalc. When publishing this Client, remove the yalc line, and use this the commented
