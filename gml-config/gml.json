@@ -49,12 +49,9 @@
             "comment": "This is for 'BIG_MACRO' things."
         },
         {
-            "match": "\\b(\\$[0-9]*)\\b",
-            "name": "constant.numeric.hex.gml"
-        },
-        {
             "match": "\\b([0-9]+[.][0-9]+)\\b",
-            "name": "constant.numeric.real.gml"
+            "name": "constant.numeric.real.gml",
+            "comment": "For floats"
         },
         {
             "match": "\\b([0-9]+)\\b",
@@ -65,12 +62,8 @@
             "name": "keyword.control.gml"
         },
         {
-            "match": "\\[\\#|\\[\\?|\\[@|\\-|\\+|\\||=|%|\\^|&|\\*|!|<|>|:|/",
+            "match": "\\[\\#|\\[\\?|\\[@|\\[\\||\\-|\\+|\\||=|%|\\^|&|\\*|!|<|>|:|/",
             "name": "keyword.operator.character.gml"
-        },
-        {
-            "match": "\\[|\\]",
-            "name": "meta.brace.square"
         },
         {
             "match": "\\b(and|or|xor|not)\\b",
