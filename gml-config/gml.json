@@ -85,7 +85,7 @@
             "name": "constant.language.gml"
         },
         {
-            "match": "\\b((global)?var)|(enum)|(#macro)\\b",
+            "match": "\\b(var|enum|#macro)\\b",
             "name": "storage.type.gml"
         },
         {
