@@ -82,8 +82,12 @@
             "name": "storage.type.gml"
         },
         {
-            "match": "(?i)\\b(global|local|self|other)\\b",
-            "name": "varable.language.gml"
+            "match": "\\b(global|id|self|other)\\b",
+            "name": "storage.type.gml"
+        },
+        {
+            "match": "\\b(global\\.[a-zA-Z_][a-zA-Z0-9_]+)",
+            "name": "storage.modifier.gml"
         },
         {
             "match": "(?i)\\b((obj|scr|spr|rm)_\\w+)\\b",
