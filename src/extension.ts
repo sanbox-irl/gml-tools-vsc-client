@@ -136,7 +136,7 @@ export function activate(context: vscode.ExtensionContext) {
         });
         client.onNotification('compile.status', (data: string) => {
             let sendInput = true;
-            if (!data.includes('Attempting to WriteValue for unsupported type')) {
+            if (data.includes('Attempting to WriteValue for unsupported type')) {
                 sendInput = false;
             }
 
