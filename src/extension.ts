@@ -10,10 +10,19 @@ import {
     LanguageClient,
     LanguageClientOptions,
     ServerOptions,
-    TransportKind
+    TransportKind,
+    RequestType
     // RequestType
 } from 'vscode-languageclient';
-import { ResourceTree, ClientViewNode } from './resourceTree';
+import { ClientViewNode, ResourceTreeView } from './resourceTree';
+
+export interface ScriptPackage {
+    /** This is the name of the script to create. */
+    scriptName: string;
+
+    /** This is the UUID of the GMFolder to create the Script under. */
+    viewUUID: string;
+}
 
 export function activate(context: vscode.ExtensionContext) {
     // We run from the .yalc store. For context, every compile in the LS will push itself
@@ -125,8 +134,14 @@ export function activate(context: vscode.ExtensionContext) {
             compileOutput.appendLine('Starting Compile');
             compileOutput.show();
         });
-        client.onNotification('compile.status', (data) => {
-            compileOutput.append(data);
+        client.onNotification('compile.status', (data: string) => {
+            let sendInput = true;
+            if (!data.includes('Attempting to WriteValue for unsupported type')) {
+                sendInput = false;
+            }
+
+            // Send off the log
+            if (sendInput) compileOutput.append(data);
         });
         client.onNotification('compile.finished', () => {
             compileOutput.appendLine('\n\nGame Run Complete');
@@ -155,8 +170,68 @@ export function activate(context: vscode.ExtensionContext) {
         });
 
         client.onNotification('indexComplete', () => {
-            const resourceTree = new ResourceTree(client);
-            context.subscriptions.push(vscode.window.registerTreeDataProvider('GMLTools.resourceTree', resourceTree));
+            const ourResourceTreeView = new ResourceTreeView(client);
+            context.subscriptions.push(
+                vscode.window.registerTreeDataProvider(
+                    'GMLTools.resourceTree',
+                    ourResourceTreeView.resourceTreeDataProvider
+                )
+            );
+
+            vscode.commands.registerCommand('GMLTools.resourceTree.createScript', async (thisNode: ClientViewNode) => {
+                // Create our Types
+                const type = new RequestType<ScriptPackage, ClientViewNode | null, void, void>('createScriptAtUUID');
+                const scriptName = await vscode.window.showInputBox({
+                    prompt: 'Script Name?',
+                    ignoreFocusOut: true
+                });
+                if (!scriptName) return;
+
+                // Create our Script Pack
+                const ourScriptPack: ScriptPackage = {
+                    scriptName: scriptName,
+                    viewUUID: thisNode.id
+                };
+                const thisNewNode = await client.sendRequest(type, ourScriptPack);
+
+                if (thisNewNode) {
+                    // Update our Tree
+                    ourResourceTreeView.resourceTreeDataProvider.refresh();
+
+                    // Take us to the file
+                    const thisURI = await vscode.Uri.file(thisNewNode.fpath);
+                    await vscode.window.showTextDocument(thisURI);
+
+                    ourResourceTreeView.reveal(thisNewNode);
+                }
+            });
+
+            vscode.commands.registerCommand('GMLTools.resourceTree.deleteScript', async (thisNode: ClientViewNode) => {
+                // Create our Types
+                const type = new RequestType<ScriptPackage, boolean, void, void>('deleteScriptAtUUID');
+
+                // Create our Script Pack
+                const ourScriptPack: ScriptPackage = {
+                    scriptName: thisNode.name,
+                    viewUUID: thisNode.id
+                };
+
+                const success = await client.sendRequest(type, ourScriptPack);
+                if (success) {
+                    ourResourceTreeView.resourceTreeDataProvider.refresh();
+                }
+            });
+
+            vscode.commands.registerCommand('GMLTools.resourceTree.createFolder', () => {});
+            vscode.commands.registerCommand('GMLTools.resourceTree.reveal', (thisNode: ClientViewNode) => {
+                vscode.commands.executeCommand('revealFileInOS', thisNode.fpath);
+            });
+            vscode.commands.registerCommand('GMLTools.resourceTree.deleteFolder', () =>
+                vscode.window.showInformationMessage('This worked?')
+            );
+            vscode.commands.registerCommand('GMLTools.resourceTree.renameFolder', () =>
+                vscode.window.showInformationMessage('This worked?')
+            );
         });
     });
 

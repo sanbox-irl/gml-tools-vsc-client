@@ -5,6 +5,9 @@ export interface ClientViewNode {
     /** This is the model name of the resource. */
     modelName: string;
 
+    /** This is the fiterType.*/
+    filterType: string;
+
     /** This is the human readable name of a resource, such as "objPlayer". */
     name: string;
 
@@ -33,7 +36,9 @@ export class ResourceTree implements vscode.TreeDataProvider<ClientViewNode> {
         const item = new vscode.TreeItem(node.name);
         item.id = node.id;
         item.resourceUri = vscode.Uri.file(node.fpath);
-        item.iconPath = node.modelName == 'GMFolder' ? vscode.ThemeIcon.Folder : vscode.ThemeIcon.File;
+
+        item.contextValue = node.filterType + (node.modelName === 'GMFolder' ? ':Folder' : ':File');
+        item.iconPath = node.modelName === 'GMFolder' ? vscode.ThemeIcon.Folder : vscode.ThemeIcon.File;
         item.collapsibleState = this.isPseudoFolder(node.modelName)
             ? vscode.TreeItemCollapsibleState.Collapsed
             : vscode.TreeItemCollapsibleState.None;
@@ -67,7 +72,30 @@ export class ResourceTree implements vscode.TreeDataProvider<ClientViewNode> {
         return resourceViews;
     }
 
+    refresh(): void {
+        this._onDidChangeTreeData.fire();
+    }
+
     private isPseudoFolder(modelName: string): boolean {
         return ['GMFolder', 'GMObject', 'GMShader', 'GMSprite'].includes(modelName);
+    }
+}
+
+export class ResourceTreeView {
+    resourceTree: vscode.TreeView<ClientViewNode>;
+    resourceTreeDataProvider: ResourceTree;
+
+    constructor(client: LanguageClient) {
+        this.resourceTreeDataProvider = new ResourceTree(client);
+        this.resourceTree = vscode.window.createTreeView('GMLTools.resourceTree', {
+            treeDataProvider: this.resourceTreeDataProvider
+        });
+    }
+
+    reveal(thisView: ClientViewNode) {
+        this.resourceTree.reveal(thisView, {
+            focus: true,
+            select: true
+        });
     }
 }

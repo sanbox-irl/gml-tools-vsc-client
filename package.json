@@ -18,21 +18,6 @@
     "contributes": {
         "commands": [
             {
-                "command": "GMLTools.createObject",
-                "title": "Create Object",
-                "category": "GML Tools"
-            },
-            {
-                "command": "GMLTools.createScript",
-                "title": "Create Script",
-                "category": "GML Tools"
-            },
-            {
-                "command": "GMLTools.addEvents",
-                "title": "Add Events to Current Object",
-                "category": "GML Tools"
-            },
-            {
                 "command": "GMLTools.compileTestVM",
                 "title": "Test Project -- VM",
                 "category": "GML Tools"
@@ -56,6 +41,36 @@
                 "command": "GMLTools.restoreYYP",
                 "title": "Restore YYP To Original State",
                 "category": "GML Tools"
+            },
+            {
+                "command": "GMLTools.resourceTree.createScript",
+                "title": "New Script",
+                "category": "FileOps"
+            },
+            {
+                "command": "GMLTools.resourceTree.createFolder",
+                "title": "New Folder",
+                "category": "FileOps"
+            },
+            {
+                "command": "GMLTools.resourceTree.reveal",
+                "title": "Reveal in Explorer",
+                "category": "FileOps"
+            },
+            {
+                "command": "GMLTools.resourceTree.deleteFolder",
+                "title": "Delete",
+                "category": "Rename/Delete"
+            },
+            {
+                "command": "GMLTools.resourceTree.renameFolder",
+                "title": "Rename",
+                "category": "Rename/Delete"
+            },
+            {
+                "command": "GMLTools.resourceTree.deleteScript",
+                "title": "Delete Script",
+                "category": "Rename/Delete"
             }
         ],
         "languages": [
@@ -133,6 +148,40 @@
                     "name": "Outline"
                 }
             ]
+        },
+        "menus": {
+            "view/item/context": [
+                {
+                    "command": "GMLTools.resourceTree.createScript",
+                    "when": "view == GMLTools.resourceTree && viewItem == GMScript:Folder",
+                    "group": "FileOps"
+                },
+                {
+                    "command": "GMLTools.resourceTree.createFolder",
+                    "when": "view == GMLTools.resourceTree && viewItem =~ /.*:Folder/",
+                    "group": "FileOps"
+                },
+                {
+                    "command": "GMLTools.resourceTree.reveal",
+                    "when": "view == GMLTools.resourceTree",
+                    "group": "FileOps"
+                },
+                {
+                    "command": "GMLTools.resourceTree.deleteFolder",
+                    "when": "view == GMLTools.resourceTree && viewItem =~ /.*:Folder/",
+                    "group": "Rename/Delete"
+                },
+                {
+                    "command": "GMLTools.resourceTree.renameFolder",
+                    "when": "view == GMLTools.resourceTree && viewItem =~ /.*:Folder/",
+                    "group": "Rename/Delete"
+                },
+                {
+                    "command": "GMLTools.resourceTree.deleteScript",
+                    "when": "view == GMLTools.resourceTree && viewItem == GMScript:File",
+                    "group": "Rename/Delete"
+                }
+            ]
         }
     },
     "scripts": {
@@ -166,7 +215,8 @@
         "vscode-languageclient": "^5.0.1",
         "vscode-languageserver": "^5.0.0",
         "vscode-languageserver-protocol-foldingprovider": "^2.0.1",
-        "vscode-languageserver-types": "^3.10.1"
+        "vscode-languageserver-types": "^3.10.1",
+        "yyp-typings": "^2.2.1"
     },
     "devDependencies": {
         "@types/node": "^10.7.1",
