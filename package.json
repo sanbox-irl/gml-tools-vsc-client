@@ -4,7 +4,7 @@
     "author": "Jonathan Spira (sanboxrunner) @sanboxstudios",
     "publisher": "Sanbox-Studios",
     "license": "MIT",
-    "version": "0.9.4",
+    "version": "0.9.5",
     "engines": {
         "vscode": "^1.26.0"
     },
@@ -208,7 +208,7 @@
         "url": "https://github.com/sanboxrunner/gml-tools-vsc-client"
     },
     "dependencies": {
-        "gml-tools-langserver": "^0.9.4",
+        "gml-tools-langserver": "^0.9.5",
         "mkdirp": "^0.5.1",
         "path": "^0.12.7",
         "vscode": "^1.1.21",
