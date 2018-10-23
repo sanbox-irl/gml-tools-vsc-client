@@ -178,6 +178,11 @@ export function activate(context: vscode.ExtensionContext) {
                 )
             );
 
+            client.onNotification('refresh', () => {
+                // Update our Tree
+                ourResourceTreeView.resourceTreeDataProvider.refresh();
+            });
+
             vscode.commands.registerCommand('GMLTools.resourceTree.createScript', async (thisNode: ClientViewNode) => {
                 // Create our Types
                 const type = new RequestType<ScriptPackage, ClientViewNode | null, void, void>('createScriptAtUUID');
