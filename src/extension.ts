@@ -16,9 +16,9 @@ import {
 } from 'vscode-languageclient';
 import { ClientViewNode, ResourceTreeView } from './resourceTree';
 
-export interface ScriptPackage {
+export interface ResourcePackage {
     /** This is the name of the script to create. */
-    scriptName: string;
+    resourceName: string;
 
     /** This is the UUID of the GMFolder to create the Script under. */
     viewUUID: string;
@@ -172,10 +172,7 @@ export function activate(context: vscode.ExtensionContext) {
         client.onNotification('indexComplete', () => {
             const ourResourceTreeView = new ResourceTreeView(client);
             context.subscriptions.push(
-                vscode.window.registerTreeDataProvider(
-                    'GMLTools.resourceTree',
-                    ourResourceTreeView.resourceTreeDataProvider
-                )
+                vscode.window.registerTreeDataProvider('GMLTools.resourceTree', ourResourceTreeView.resourceTreeDataProvider)
             );
 
             client.onNotification('refresh', () => {
@@ -185,7 +182,7 @@ export function activate(context: vscode.ExtensionContext) {
 
             vscode.commands.registerCommand('GMLTools.resourceTree.createScript', async (thisNode: ClientViewNode) => {
                 // Create our Types
-                const type = new RequestType<ScriptPackage, ClientViewNode | null, void, void>('createScriptAtUUID');
+                const type = new RequestType<ResourcePackage, ClientViewNode | null, void, void>('createScriptAtUUID');
                 const scriptName = await vscode.window.showInputBox({
                     prompt: 'Script Name?',
                     ignoreFocusOut: true
@@ -193,8 +190,8 @@ export function activate(context: vscode.ExtensionContext) {
                 if (!scriptName) return;
 
                 // Create our Script Pack
-                const ourScriptPack: ScriptPackage = {
-                    scriptName: scriptName,
+                const ourScriptPack: ResourcePackage = {
+                    resourceName: scriptName,
                     viewUUID: thisNode.id
                 };
                 const thisNewNode = await client.sendRequest(type, ourScriptPack);
@@ -211,13 +208,35 @@ export function activate(context: vscode.ExtensionContext) {
                 }
             });
 
+            vscode.commands.registerCommand('GMLTools.resourceTree.createObject', async (thisNode: ClientViewNode) => {
+                // Create our Types
+                const type = new RequestType<ResourcePackage, ClientViewNode | null, void, void>('createObjectAtUUID');
+                const objectName = await vscode.window.showInputBox({
+                    prompt: 'Object Name?',
+                    ignoreFocusOut: true
+                });
+                if (!objectName) return;
+
+                // Create our Object Name
+                const ourObjectPack: ResourcePackage = {
+                    resourceName: objectName,
+                    viewUUID: thisNode.id
+                };
+                const thisNewNode = await client.sendRequest(type, ourObjectPack);
+
+                if (thisNewNode) {
+                    // Update our Tree
+                    ourResourceTreeView.resourceTreeDataProvider.refresh();
+                }
+            });
+
             vscode.commands.registerCommand('GMLTools.resourceTree.deleteScript', async (thisNode: ClientViewNode) => {
                 // Create our Types
-                const type = new RequestType<ScriptPackage, boolean, void, void>('deleteScriptAtUUID');
+                const type = new RequestType<ResourcePackage, boolean, void, void>('deleteScriptAtUUID');
 
                 // Create our Script Pack
-                const ourScriptPack: ScriptPackage = {
-                    scriptName: thisNode.name,
+                const ourScriptPack: ResourcePackage = {
+                    resourceName: thisNode.name,
                     viewUUID: thisNode.id
                 };
 
@@ -226,6 +245,80 @@ export function activate(context: vscode.ExtensionContext) {
                     ourResourceTreeView.resourceTreeDataProvider.refresh();
                 }
             });
+
+            // #region Events
+            vscode.commands.registerCommand('GMLTools.resourceTree.eventsCreate', async (thisNode: ClientViewNode) => {});
+
+            vscode.commands.registerCommand('GMLTools.resourceTree.eventsStep', async (thisNode: ClientViewNode) => {
+                // const type = new RequestType<ResourcePackage, ClientViewNode | null, void, void>('createEventAtUUID');
+                const eventType = await vscode.window.showInputBox({
+                    prompt: 'Begin, Normal, or End Step? Hitting enter without input creates a Normal Step Event',
+                    ignoreFocusOut: true
+                });
+                if (eventType === undefined) return;
+
+                let thisEvent = '';
+
+                switch (eventType.toLowerCase().trim()) {
+                    case 'normal':
+                        thisEvent = 'step_0';
+                        break;
+
+                    case '':
+                        thisEvent = 'step_0';
+                        break;
+
+                    case 'begin':
+                        thisEvent = 'step_1';
+                        break;
+
+                    case 'end':
+                        thisEvent = 'step_2';
+                        break;
+
+                    case '0':
+                        thisEvent = 'step_0';
+                        break;
+
+                    case '1':
+                        thisEvent = 'step_1';
+                        break;
+
+                    case '2':
+                        thisEvent = 'step_2';
+                        break;
+                }
+
+                // Create our Script Pack
+                const ourScriptPack: ResourcePackage = {
+                    resourceName: thisEvent,
+                    viewUUID: thisNode.id
+                };
+                const thisNewNode = await client.sendRequest(type, ourScriptPack);
+
+                if (thisNewNode) {
+                    // Update our Tree
+                    ourResourceTreeView.resourceTreeDataProvider.refresh();
+
+                    // Take us to the file
+                    const thisURI = await vscode.Uri.file(thisNewNode.fpath);
+                    await vscode.window.showTextDocument(thisURI);
+
+                    ourResourceTreeView.reveal(thisNewNode);
+                }
+            });
+
+            vscode.commands.registerCommand('GMLTools.resourceTree.eventsDraw', async (thisNode: ClientViewNode) => {});
+
+            vscode.commands.registerCommand('GMLTools.resourceTree.eventsDestroy', async (thisNode: ClientViewNode) => {});
+
+            vscode.commands.registerCommand('GMLTools.resourceTree.eventsCleanup', async (thisNode: ClientViewNode) => {});
+
+            vscode.commands.registerCommand('GMLTools.resourceTree.eventsUser', async (thisNode: ClientViewNode) => {});
+
+            vscode.commands.registerCommand('GMLTools.resourceTree.eventsAlarm', async (thisNode: ClientViewNode) => {});
+
+            // #endregion
 
             vscode.commands.registerCommand('GMLTools.resourceTree.createFolder', () => {});
             vscode.commands.registerCommand('GMLTools.resourceTree.reveal', (thisNode: ClientViewNode) => {

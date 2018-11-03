@@ -53,6 +53,16 @@
                 "category": "FileOps"
             },
             {
+                "command": "GMLTools.resourceTree.createObject",
+                "title": "New Object",
+                "category": "FileOps"
+            },
+            {
+                "command": "GMLTools.resourceTree.eventsStep",
+                "title": "Add Step Events",
+                "category": "Events"
+            },
+            {
                 "command": "GMLTools.resourceTree.reveal",
                 "title": "Reveal in Explorer",
                 "category": "FileOps"
@@ -160,6 +170,16 @@
                     "command": "GMLTools.resourceTree.createFolder",
                     "when": "view == GMLTools.resourceTree && viewItem =~ /.*:Folder/",
                     "group": "FileOps"
+                },
+                {
+                    "command": "GMLTools.resourceTree.createObject",
+                    "when": "view == GMLTools.resourceTree && viewItem == GMObject:Folder",
+                    "group": "FileOps"
+                },
+                {
+                    "command": "GMLTools.resourceTree.eventsStep",
+                    "when": "view == GMLTools.resourceTree && viewItem == GMObject:File",
+                    "group": "Events"
                 },
                 {
                     "command": "GMLTools.resourceTree.reveal",
