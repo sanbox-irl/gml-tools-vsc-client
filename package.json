@@ -58,9 +58,32 @@
                 "category": "FileOps"
             },
             {
-                "command": "GMLTools.resourceTree.eventsStep",
-                "title": "Add Step Events",
+                "command": "GMLTools.resourceTree.event.create",
+                "title": "Add Event: Create",
                 "category": "Events"
+            },
+            {
+                "command": "GMLTools.resourceTree.event.destroy",
+                "title": "Add Event: Destroy",
+                "category": "Events"
+            },
+            {
+                "command": "GMLTools.resourceTree.event.cleanup",
+                "title": "Add Event: Cleanup",
+                "category": "Events"
+            },
+            {
+                "command": "GMLTools.resourceTree.event.step",
+                "title": "Add Event: Step",
+                "category": "Events"
+            },
+            {
+                "command": "GMLTools.resourceTree.event.alarm",
+                "title": "Add Event: Alarm",
+                "category": "Events"
+            },
+            {
+                "command": "GMLTools.resourceTree.event."
             },
             {
                 "command": "GMLTools.resourceTree.reveal",
