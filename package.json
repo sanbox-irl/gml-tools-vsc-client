@@ -83,7 +83,14 @@
                 "category": "Events"
             },
             {
-                "command": "GMLTools.resourceTree.event."
+                "command": "GMLTools.resourceTree.event.draw",
+                "title": "Add Event: Draw",
+                "category": "Events"
+            },
+            {
+                "command": "GMLTools.resourceTree.event.user",
+                "title": "Add Event: User",
+                "category": "Events"
             },
             {
                 "command": "GMLTools.resourceTree.reveal",
@@ -200,11 +207,6 @@
                     "group": "FileOps"
                 },
                 {
-                    "command": "GMLTools.resourceTree.eventsStep",
-                    "when": "view == GMLTools.resourceTree && viewItem == GMObject:File",
-                    "group": "Events"
-                },
-                {
                     "command": "GMLTools.resourceTree.reveal",
                     "when": "view == GMLTools.resourceTree",
                     "group": "FileOps"
@@ -223,6 +225,41 @@
                     "command": "GMLTools.resourceTree.deleteScript",
                     "when": "view == GMLTools.resourceTree && viewItem == GMScript:File",
                     "group": "Rename/Delete"
+                },
+                {
+                    "command": "GMLTools.resourceTree.event.create",
+                    "when": "view == GMLTools.resourceTree && viewItem == GMObject:File",
+                    "group": "Events@0"
+                },
+                {
+                    "command": "GMLTools.resourceTree.event.destroy",
+                    "when": "view == GMLTools.resourceTree && viewItem == GMObject:File",
+                    "group": "Events@1"
+                },
+                {
+                    "command": "GMLTools.resourceTree.event.cleanup",
+                    "when": "view == GMLTools.resourceTree && viewItem == GMObject:File",
+                    "group": "Events@2"
+                },
+                {
+                    "command": "GMLTools.resourceTree.event.step",
+                    "when": "view == GMLTools.resourceTree && viewItem == GMObject:File",
+                    "group": "Events@3"
+                },
+                {
+                    "command": "GMLTools.resourceTree.event.alarm",
+                    "when": "view == GMLTools.resourceTree && viewItem == GMObject:File",
+                    "group": "Events@4"
+                },
+                {
+                    "command": "GMLTools.resourceTree.event.draw",
+                    "when": "view == GMLTools.resourceTree && viewItem == GMObject:File",
+                    "group": "Events@5"
+                },
+                {
+                    "command": "GMLTools.resourceTree.event.user",
+                    "when": "view == GMLTools.resourceTree && viewItem == GMObject:File",
+                    "group": "Events@6"
                 }
             ]
         }

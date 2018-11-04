@@ -247,16 +247,38 @@ export function activate(context: vscode.ExtensionContext) {
             });
 
             // #region Events
-            vscode.commands.registerCommand('GMLTools.resourceTree.eventsCreate', async (thisNode: ClientViewNode) => {});
+            const genericEventCreation = async (eventName: string, thisNode: ClientViewNode) => {
+                const type = new RequestType<ResourcePackage, ClientViewNode | null, void, void>('createEventAtUUID');
 
-            vscode.commands.registerCommand('GMLTools.resourceTree.eventsStep', async (thisNode: ClientViewNode) => {
-                // const type = new RequestType<ResourcePackage, ClientViewNode | null, void, void>('createEventAtUUID');
+                // Create our Event Pack
+                const ourEventPack: ResourcePackage = {
+                    resourceName: eventName,
+                    viewUUID: thisNode.id
+                };
+                const thisNewNode = await client.sendRequest(type, ourEventPack);
+
+                if (thisNewNode) {
+                    // Update our Tree
+                    ourResourceTreeView.resourceTreeDataProvider.refresh();
+
+                    // Take us to the file
+                    const thisURI = await vscode.Uri.file(thisNewNode.fpath);
+                    await vscode.window.showTextDocument(thisURI);
+
+                    ourResourceTreeView.reveal(thisNewNode);
+                }
+            };
+
+            vscode.commands.registerCommand('GMLTools.resourceTree.event.create', async (thisNode: ClientViewNode) => {
+                await genericEventCreation('create', thisNode);
+            });
+
+            vscode.commands.registerCommand('GMLTools.resourceTree.event.step', async (thisNode: ClientViewNode) => {
                 const eventType = await vscode.window.showInputBox({
                     prompt: 'Begin, Normal, or End Step? Hitting enter without input creates a Normal Step Event',
                     ignoreFocusOut: true
                 });
                 if (eventType === undefined) return;
-
                 let thisEvent = '';
 
                 switch (eventType.toLowerCase().trim()) {
@@ -289,34 +311,57 @@ export function activate(context: vscode.ExtensionContext) {
                         break;
                 }
 
-                // Create our Script Pack
-                const ourScriptPack: ResourcePackage = {
-                    resourceName: thisEvent,
-                    viewUUID: thisNode.id
-                };
-                const thisNewNode = await client.sendRequest(type, ourScriptPack);
-
-                if (thisNewNode) {
-                    // Update our Tree
-                    ourResourceTreeView.resourceTreeDataProvider.refresh();
-
-                    // Take us to the file
-                    const thisURI = await vscode.Uri.file(thisNewNode.fpath);
-                    await vscode.window.showTextDocument(thisURI);
-
-                    ourResourceTreeView.reveal(thisNewNode);
+                if (thisEvent === 'step_0' || thisEvent === 'step_1' || thisEvent === 'step_2') {
+                    genericEventCreation(thisEvent, thisNode);
                 }
             });
 
-            vscode.commands.registerCommand('GMLTools.resourceTree.eventsDraw', async (thisNode: ClientViewNode) => {});
+            vscode.commands.registerCommand('GMLTools.resourceTree.event.draw', async (thisNode: ClientViewNode) => {
+                let eventType = await vscode.window.showInputBox({
+                    prompt:
+                        'Enter for Normal Draw. Begin/end or gui for each event, eg. "begin gui" or "end", or "post/pre" for those events.',
+                    ignoreFocusOut: true
+                });
+                if (eventType === undefined) return;
 
-            vscode.commands.registerCommand('GMLTools.resourceTree.eventsDestroy', async (thisNode: ClientViewNode) => {});
+                let thisEvent = '';
+                eventType = eventType.toLowerCase().trim();
+                if (eventType == '') {
+                    thisEvent = 'draw';
+                } else if (eventType == 'post') {
+                    thisEvent = 'post';
+                } else if (eventType == 'pre') {
+                    thisEvent = 'pre';
+                } else if (eventType.includes('gui')) {
+                    if (eventType.includes('begin') && !eventType.includes('end')) {
+                        eventType = 'gui_begin';
+                    } else if (!eventType.includes('begin') && eventType.includes('end')) {
+                        eventType = 'gui_end';
+                    } else {
+                        eventType = 'gui';
+                    }
+                } else {
+                    if (eventType.includes('begin') && !eventType.includes('end')) {
+                        eventType = 'draw_begin';
+                    } else if (!eventType.includes('begin') && eventType.includes('end')) {
+                        eventType = 'draw_end';
+                    } else {
+                        eventType = 'draw';
+                    }
+                }
 
-            vscode.commands.registerCommand('GMLTools.resourceTree.eventsCleanup', async (thisNode: ClientViewNode) => {});
+                if (thisEvent === 'step_0' || thisEvent === 'step_1' || thisEvent === 'step_2') {
+                    genericEventCreation(thisEvent, thisNode);
+                }
+            });
 
-            vscode.commands.registerCommand('GMLTools.resourceTree.eventsUser', async (thisNode: ClientViewNode) => {});
+            vscode.commands.registerCommand('GMLTools.resourceTree.event.destroy', async (thisNode: ClientViewNode) => {});
 
-            vscode.commands.registerCommand('GMLTools.resourceTree.eventsAlarm', async (thisNode: ClientViewNode) => {});
+            vscode.commands.registerCommand('GMLTools.resourceTree.event.cleanup', async (thisNode: ClientViewNode) => {});
+
+            vscode.commands.registerCommand('GMLTools.resourceTree.event.user', async (thisNode: ClientViewNode) => {});
+
+            vscode.commands.registerCommand('GMLTools.resourceTree.event.alarm', async (thisNode: ClientViewNode) => {});
 
             // #endregion
 
