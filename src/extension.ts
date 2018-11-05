@@ -246,6 +246,22 @@ export function activate(context: vscode.ExtensionContext) {
                 }
             });
 
+            vscode.commands.registerCommand('GMLTools.resourceTree.deleteObject', async (thisNode: ClientViewNode) => {
+                // Create our Types
+                const type = new RequestType<ResourcePackage, boolean, void, void>('deleteObjectAtUUID');
+
+                // Create our Object Pack
+                const ourObjectPack: ResourcePackage = {
+                    resourceName: thisNode.name,
+                    viewUUID: thisNode.id
+                };
+
+                const success = await client.sendRequest(type, ourObjectPack);
+                if (success) {
+                    ourResourceTreeView.resourceTreeDataProvider.refresh();
+                }
+            });
+
             // #region Events
             const genericEventCreation = async (eventName: string, thisNode: ClientViewNode) => {
                 const type = new RequestType<ResourcePackage, ClientViewNode | null, void, void>('createEventAtUUID');
@@ -309,16 +325,20 @@ export function activate(context: vscode.ExtensionContext) {
                         ignoreFocusOut: true
                     }
                 );
+                if (eventNumber === undefined) return;
+                await genericEventCreation('User Event - ' + eventNumber.toString(), thisNode);
             });
 
             vscode.commands.registerCommand('GMLTools.resourceTree.event.alarm', async (thisNode: ClientViewNode) => {
                 const eventNumber = await vscode.window.showQuickPick(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], {
                     ignoreFocusOut: true
                 });
+                if (eventNumber === undefined) return;
+                await genericEventCreation('Alarm - ' + eventNumber.toString(), thisNode);
             });
 
             vscode.commands.registerCommand('GMLTools.resourceTree.event.async', async (thisNode: ClientViewNode) => {
-                const eventNumber = await vscode.window.showQuickPick(
+                const eventName = await vscode.window.showQuickPick(
                     [
                         'Audio Playback',
                         'Audio Recording',
@@ -338,6 +358,32 @@ export function activate(context: vscode.ExtensionContext) {
                         ignoreFocusOut: true
                     }
                 );
+
+                if (eventName === undefined) return;
+                await genericEventCreation(eventName, thisNode);
+            });
+
+            vscode.commands.registerCommand('GMLTools.resourceTree.deleteEvent', async (thisNode: ClientViewNode) => {
+                // Create our Types
+                const type = new RequestType<ResourcePackage, boolean, void, void>('deleteEventAtUUID');
+
+                /**
+                 * Note: EventIDs are stored in this fashion:
+                 * OBJECTID:EVENTID
+                 * explicitly for this purpose. We send the latter as the "resourceName" and the former
+                 * as the "viewUUID".
+                 */
+
+                const twoIDs = thisNode.id.split(':');
+                const ourObjectPack: ResourcePackage = {
+                    resourceName: twoIDs[1],
+                    viewUUID: twoIDs[0]
+                };
+
+                const success = await client.sendRequest(type, ourObjectPack);
+                if (success) {
+                    ourResourceTreeView.resourceTreeDataProvider.refresh();
+                }
             });
             // #endregion
 

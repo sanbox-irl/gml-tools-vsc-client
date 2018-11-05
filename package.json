@@ -116,6 +116,16 @@
                 "command": "GMLTools.resourceTree.deleteScript",
                 "title": "Delete Script",
                 "category": "Rename/Delete"
+            },
+            {
+                "command": "GMLTools.resourceTree.deleteEvent",
+                "title": "Delete Event",
+                "category": "Rename/Delete"
+            },
+            {
+                "command": "GMLTools.resourceTree.deleteObject",
+                "title": "Delete Object",
+                "category": "Rename/Delete"
             }
         ],
         "languages": [
@@ -227,8 +237,18 @@
                     "group": "Rename/Delete"
                 },
                 {
+                    "command": "GMLTools.resourceTree.deleteEvent",
+                    "when": "view == GMLTools.resourceTree && viewItem == GMEvent:File",
+                    "group": "Rename/Delete"
+                },
+                {
                     "command": "GMLTools.resourceTree.deleteScript",
                     "when": "view == GMLTools.resourceTree && viewItem == GMScript:File",
+                    "group": "Rename/Delete"
+                },
+                {
+                    "command": "GMLTools.resourceTree.deleteObject",
+                    "when": "view == GMLTools.resourceTree && viewItem == GMObject:File",
                     "group": "Rename/Delete"
                 },
                 {

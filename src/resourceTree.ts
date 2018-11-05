@@ -37,7 +37,7 @@ export class ResourceTree implements vscode.TreeDataProvider<ClientViewNode> {
         item.id = node.id;
         item.resourceUri = vscode.Uri.file(node.fpath);
 
-        item.contextValue = node.filterType + (node.modelName === 'GMFolder' ? ':Folder' : ':File');
+        item.contextValue = node.modelName + (node.modelName === 'GMFolder' ? ':Folder' : ':File');
         item.iconPath = node.modelName === 'GMFolder' ? vscode.ThemeIcon.Folder : vscode.ThemeIcon.File;
         item.collapsibleState = this.isPseudoFolder(node.modelName)
             ? vscode.TreeItemCollapsibleState.Collapsed
