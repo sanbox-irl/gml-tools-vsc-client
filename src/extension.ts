@@ -334,23 +334,23 @@ export function activate(context: vscode.ExtensionContext) {
                     thisEvent = 'pre';
                 } else if (eventType.includes('gui')) {
                     if (eventType.includes('begin') && !eventType.includes('end')) {
-                        eventType = 'gui_begin';
+                        thisEvent = 'gui_begin';
                     } else if (!eventType.includes('begin') && eventType.includes('end')) {
-                        eventType = 'gui_end';
+                        thisEvent = 'gui_end';
                     } else {
-                        eventType = 'gui';
+                        thisEvent = 'gui';
                     }
                 } else {
                     if (eventType.includes('begin') && !eventType.includes('end')) {
-                        eventType = 'draw_begin';
+                        thisEvent = 'draw_begin';
                     } else if (!eventType.includes('begin') && eventType.includes('end')) {
-                        eventType = 'draw_end';
+                        thisEvent = 'draw_end';
                     } else {
-                        eventType = 'draw';
+                        thisEvent = 'draw';
                     }
                 }
 
-                if (thisEvent === 'step_0' || thisEvent === 'step_1' || thisEvent === 'step_2') {
+                if (['draw', 'draw_begin', 'draw_end', 'gui', 'gui_begin', 'gui_end', 'pre', 'post'].includes(eventType)) {
                     genericEventCreation(thisEvent, thisNode);
                 }
             });
