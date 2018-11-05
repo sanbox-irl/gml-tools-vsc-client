@@ -3627,6 +3627,6 @@ yazl@^2.2.1:
     buffer-crc32 "~0.2.3"
 
 yyp-typings@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/yyp-typings/-/yyp-typings-2.2.1.tgz#44ff3348accf8c484db5913769b56f9ecb1631b3"
-  integrity sha512-igLCTjv7ITd16r9PxR+elrZdiaM9WxzFTVs4T3xZ5APwnTUWGvMM0xqafRuFAkujB/2GBzEe9MGDgXpL7sf43Q==
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/yyp-typings/-/yyp-typings-2.3.3.tgz#bcb4e5ce617d2d0bb8c1c30a4bf6e4b22cea7a17"
+  integrity sha512-FFLPheAvnkaZaFS/d++yZiHXFh6mOjaePTNiTrSIYZ86ZYuXaUDImqXAdpHBus4KWigQnDqJJnoXFLpqnGgmoA==

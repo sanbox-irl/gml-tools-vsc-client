@@ -93,6 +93,11 @@
                 "category": "Events"
             },
             {
+                "command": "GMLTools.resourceTree.event.async",
+                "title": "Add Event: Async",
+                "category": "Events"
+            },
+            {
                 "command": "GMLTools.resourceTree.reveal",
                 "title": "Reveal in Explorer",
                 "category": "FileOps"
@@ -260,6 +265,11 @@
                     "command": "GMLTools.resourceTree.event.user",
                     "when": "view == GMLTools.resourceTree && viewItem == GMObject:File",
                     "group": "Events@6"
+                },
+                {
+                    "command": "GMLTools.resourceTree.event.async",
+                    "when": "view == GMLTools.resourceTree && viewItem == GMObject:File",
+                    "group": "Events@7"
                 }
             ]
         }

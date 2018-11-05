@@ -60,56 +60,56 @@ export function activate(context: vscode.ExtensionContext) {
     // Create the language client and start the client.
     let client = new LanguageClient('gmlTools', 'GML Language Server', serverOptions, clientOptions);
     client.onReady().then(async () => {
-        client.onRequest('createObject', async (ourSprites: { sprites: string[] }) => {
-            const objectName = await vscode.window.showInputBox({
-                prompt: 'Object name?',
-                ignoreFocusOut: true,
-                value: 'obj'
-            });
-            if (!objectName) return null;
+        // client.onRequest('createObject', async (ourSprites: { sprites: string[] }) => {
+        //     const objectName = await vscode.window.showInputBox({
+        //         prompt: 'Object name?',
+        //         ignoreFocusOut: true,
+        //         value: 'obj'
+        //     });
+        //     if (!objectName) return null;
 
-            const objectEvents = await vscode.window.showInputBox({
-                prompt: 'Events? (seperate with comma)',
-                ignoreFocusOut: true,
-                value: 'Create, Step, Draw'
-            });
-            if (!objectEvents) return null;
+        //     const objectEvents = await vscode.window.showInputBox({
+        //         prompt: 'Events? (seperate with comma)',
+        //         ignoreFocusOut: true,
+        //         value: 'Create, Step, Draw'
+        //     });
+        //     if (!objectEvents) return null;
 
-            const sprite = await vscode.window.showQuickPick(ourSprites.sprites, {
-                canPickMany: false,
-                ignoreFocusOut: true
-            });
-            if (!sprite) return null;
+        //     const sprite = await vscode.window.showQuickPick(ourSprites.sprites, {
+        //         canPickMany: false,
+        //         ignoreFocusOut: true
+        //     });
+        //     if (!sprite) return null;
 
-            return { objectName, objectEvents, sprite };
-        });
+        //     return { objectName, objectEvents, sprite };
+        // });
 
-        client.onRequest('createScript', async () => {
-            const ourScriptName = await vscode.window.showInputBox({
-                prompt: 'Script Name?',
-                ignoreFocusOut: true
-            });
+        // client.onRequest('createScript', async () => {
+        //     const ourScriptName = await vscode.window.showInputBox({
+        //         prompt: 'Script Name?',
+        //         ignoreFocusOut: true
+        //     });
 
-            if (ourScriptName) {
-                return ourScriptName;
-            } else return null;
-        });
+        //     if (ourScriptName) {
+        //         return ourScriptName;
+        //     } else return null;
+        // });
 
-        client.onRequest('addEvents', async () => {
-            if (!vscode.window.activeTextEditor) {
-                return null;
-            }
+        // client.onRequest('addEvents', async () => {
+        //     if (!vscode.window.activeTextEditor) {
+        //         return null;
+        //     }
 
-            const thisURI = vscode.window.activeTextEditor.document.uri;
-            const ourEvents = await vscode.window.showInputBox({
-                prompt: 'Events to Add?',
-                ignoreFocusOut: true
-            });
+        //     const thisURI = vscode.window.activeTextEditor.document.uri;
+        //     const ourEvents = await vscode.window.showInputBox({
+        //         prompt: 'Events to Add?',
+        //         ignoreFocusOut: true
+        //     });
 
-            if (ourEvents) {
-                return { uri: thisURI.toString(), events: ourEvents };
-            } else return null;
-        });
+        //     if (ourEvents) {
+        //         return { uri: thisURI.toString(), events: ourEvents };
+        //     } else return null;
+        // });
 
         client.onNotification('goToURI', async (path: string) => {
             const thisURI = await vscode.Uri.file(path);
@@ -270,99 +270,75 @@ export function activate(context: vscode.ExtensionContext) {
             };
 
             vscode.commands.registerCommand('GMLTools.resourceTree.event.create', async (thisNode: ClientViewNode) => {
-                await genericEventCreation('create', thisNode);
+                await genericEventCreation('Create', thisNode);
             });
 
             vscode.commands.registerCommand('GMLTools.resourceTree.event.step', async (thisNode: ClientViewNode) => {
-                const eventType = await vscode.window.showInputBox({
-                    prompt: 'Begin, Normal, or End Step? Hitting enter without input creates a Normal Step Event',
+                const eventName = await vscode.window.showQuickPick(['Step', 'Begin Step', 'End Step'], {
                     ignoreFocusOut: true
                 });
-                if (eventType === undefined) return;
-                let thisEvent = '';
+                if (eventName === undefined) return;
 
-                switch (eventType.toLowerCase().trim()) {
-                    case 'normal':
-                        thisEvent = 'step_0';
-                        break;
-
-                    case '':
-                        thisEvent = 'step_0';
-                        break;
-
-                    case 'begin':
-                        thisEvent = 'step_1';
-                        break;
-
-                    case 'end':
-                        thisEvent = 'step_2';
-                        break;
-
-                    case '0':
-                        thisEvent = 'step_0';
-                        break;
-
-                    case '1':
-                        thisEvent = 'step_1';
-                        break;
-
-                    case '2':
-                        thisEvent = 'step_2';
-                        break;
-                }
-
-                if (thisEvent === 'step_0' || thisEvent === 'step_1' || thisEvent === 'step_2') {
-                    genericEventCreation(thisEvent, thisNode);
-                }
+                genericEventCreation(eventName, thisNode);
             });
 
             vscode.commands.registerCommand('GMLTools.resourceTree.event.draw', async (thisNode: ClientViewNode) => {
-                let eventType = await vscode.window.showInputBox({
-                    prompt:
-                        'Enter for Normal Draw. Begin/end or gui for each event, eg. "begin gui" or "end", or "post/pre" for those events.',
-                    ignoreFocusOut: true
-                });
-                if (eventType === undefined) return;
-
-                let thisEvent = '';
-                eventType = eventType.toLowerCase().trim();
-                if (eventType == '') {
-                    thisEvent = 'draw';
-                } else if (eventType == 'post') {
-                    thisEvent = 'post';
-                } else if (eventType == 'pre') {
-                    thisEvent = 'pre';
-                } else if (eventType.includes('gui')) {
-                    if (eventType.includes('begin') && !eventType.includes('end')) {
-                        thisEvent = 'gui_begin';
-                    } else if (!eventType.includes('begin') && eventType.includes('end')) {
-                        thisEvent = 'gui_end';
-                    } else {
-                        thisEvent = 'gui';
+                const eventName = await vscode.window.showQuickPick(
+                    ['Draw', 'Draw GUI', 'Draw Begin', 'Draw End', 'Draw GUI Begin', 'Draw GUI End', 'Pre-Draw', 'Post-Draw'],
+                    {
+                        ignoreFocusOut: true
                     }
-                } else {
-                    if (eventType.includes('begin') && !eventType.includes('end')) {
-                        thisEvent = 'draw_begin';
-                    } else if (!eventType.includes('begin') && eventType.includes('end')) {
-                        thisEvent = 'draw_end';
-                    } else {
-                        thisEvent = 'draw';
-                    }
-                }
+                );
+                if (eventName === undefined) return;
 
-                if (['draw', 'draw_begin', 'draw_end', 'gui', 'gui_begin', 'gui_end', 'pre', 'post'].includes(eventType)) {
-                    genericEventCreation(thisEvent, thisNode);
-                }
+                await genericEventCreation(eventName, thisNode);
             });
 
-            vscode.commands.registerCommand('GMLTools.resourceTree.event.destroy', async (thisNode: ClientViewNode) => {});
+            vscode.commands.registerCommand('GMLTools.resourceTree.event.destroy', async (thisNode: ClientViewNode) => {
+                await genericEventCreation('Destroy', thisNode);
+            });
 
-            vscode.commands.registerCommand('GMLTools.resourceTree.event.cleanup', async (thisNode: ClientViewNode) => {});
+            vscode.commands.registerCommand('GMLTools.resourceTree.event.cleanup', async (thisNode: ClientViewNode) => {
+                await genericEventCreation('Cleanup', thisNode);
+            });
 
-            vscode.commands.registerCommand('GMLTools.resourceTree.event.user', async (thisNode: ClientViewNode) => {});
+            vscode.commands.registerCommand('GMLTools.resourceTree.event.user', async (thisNode: ClientViewNode) => {
+                const eventNumber = await vscode.window.showQuickPick(
+                    ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15'],
+                    {
+                        ignoreFocusOut: true
+                    }
+                );
+            });
 
-            vscode.commands.registerCommand('GMLTools.resourceTree.event.alarm', async (thisNode: ClientViewNode) => {});
+            vscode.commands.registerCommand('GMLTools.resourceTree.event.alarm', async (thisNode: ClientViewNode) => {
+                const eventNumber = await vscode.window.showQuickPick(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], {
+                    ignoreFocusOut: true
+                });
+            });
 
+            vscode.commands.registerCommand('GMLTools.resourceTree.event.async', async (thisNode: ClientViewNode) => {
+                const eventNumber = await vscode.window.showQuickPick(
+                    [
+                        'Audio Playback',
+                        'Audio Recording',
+                        'Cloud',
+                        'Dialog',
+                        'HTTP',
+                        'In-App Purchase',
+                        'Image Loaded',
+                        'Networking',
+                        'Push Notification',
+                        'Save/Load',
+                        'Social',
+                        'Steam',
+                        'System'
+                    ],
+                    {
+                        ignoreFocusOut: true
+                    }
+                );
+            });
             // #endregion
 
             vscode.commands.registerCommand('GMLTools.resourceTree.createFolder', () => {});
