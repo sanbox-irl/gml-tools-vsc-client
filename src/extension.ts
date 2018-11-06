@@ -369,7 +369,7 @@ export function activate(context: vscode.ExtensionContext) {
 
                 /**
                  * Note: EventIDs are stored in this fashion:
-                 * OBJECTID:EVENTID
+                 * OBJECTUUID:EVENTUUID
                  * explicitly for this purpose. We send the latter as the "resourceName" and the former
                  * as the "viewUUID".
                  */
