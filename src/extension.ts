@@ -387,7 +387,28 @@ export function activate(context: vscode.ExtensionContext) {
             });
             // #endregion
 
-            vscode.commands.registerCommand('GMLTools.resourceTree.createFolder', () => {});
+            vscode.commands.registerCommand('GMLTools.resourceTree.createFolder', async (thisNode: ClientViewNode) => {
+                // Our Type
+                const type = new RequestType<ResourcePackage, boolean, void, void>('createFolder');
+
+                const folderName = await vscode.window.showInputBox({
+                    prompt: 'Folder Name?',
+                    ignoreFocusOut: true
+                });
+                if (!folderName) return;
+
+                // Create our Object Name
+                const ourFolderPack: ResourcePackage = {
+                    resourceName: folderName,
+                    viewUUID: thisNode.id
+                };
+
+                const success = await client.sendRequest(type, ourFolderPack);
+
+                if (success) {
+                    ourResourceTreeView.resourceTreeDataProvider.refresh();
+                }
+            });
             vscode.commands.registerCommand('GMLTools.resourceTree.reveal', (thisNode: ClientViewNode) => {
                 vscode.commands.executeCommand('revealFileInOS', thisNode.fpath);
             });
